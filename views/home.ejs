@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= locals.title %></title>
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Contact List</h1>
+
+        <div class="search-bar">
+            <input type="text" id="search" placeholder="Search contacts..." onkeyup="searchContacts()">
+        </div>
+
+        <div class="show_contact">
+            <ul id="contact-list">
+                <% for (let i of contact_list) { %> 
+                    <li class="contact"> 
+                        <div>
+                            <p class="contact-name"><%= i.name %></p>
+                            <p class="contact-phone"><%= i.phone %></p>
+                        </div>
+                        <div class="delete-button">
+                            <a href="/delete-contact/?id=<%= i._id %>">delete</a>
+                        </div>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+
+        <form action="/create-contact" method="POST">
+            <input type="text" name="name" placeholder="Enter name" required>
+            <input type="number" name="phone" placeholder="Enter phone" required>
+            <button type="submit">Add contact</button>
+        </form>
+    </div>
+
+    <script type="text/javascript" src="/js/home.js"></script>
+    <script>
+        function searchContacts() {
+            let input = document.getElementById('search');
+            let filter = input.value.toLowerCase();
+            let ul = document.getElementById('contact-list');
+            let li = ul.getElementsByTagName('li');
+
+            for (let i = 0; i < li.length; i++) {
+                let name = li[i].getElementsByClassName('contact-name')[0].innerText;
+                if (name.toLowerCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
+</body>
+</html>
